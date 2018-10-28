@@ -38,6 +38,10 @@ public class GameController : MonoBehaviour {
 			EndGame ();
 	}
 
+	void FixedUpdate() {
+		Timer.FixedUpdate (Time.fixedDeltaTime);
+	}
+
 	public void EndGame() {
 	}
 }
