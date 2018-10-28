@@ -11,17 +11,20 @@ public class GameController : MonoBehaviour {
 	public GameObject playerObj;
 	public GameObject gameUIObj;
 
+	private CameraController _camera;
 	private Spaceship player;
 
 	private GameUI gameUI;
 
 	void Awake() {
 		lifeUICanvas = GameObject.Find ("LifeUI");
+		_camera = GameObject.Find ("Main Camera").GetComponent<CameraController>();
 	}
 
 	// Use this for initialization
 	void Start () {
 		player = playerObj.GetComponent<Spaceship> ();
+		_camera.focus = player;
 		/*gameUI = gameUIObj.GetComponent<GameUI> ();
 
 		gameUI.UpdateLife (player.life);*/
