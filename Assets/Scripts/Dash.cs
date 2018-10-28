@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dash : Ability {
 
 	private Timer _effectTimer;
-	private Vector3 _userDirection;
+	private Vector2 _userDirection;
 
 	public Dash(Spaceship user) : base(user) {
 		_cooldown = 2.0f;
@@ -22,7 +22,7 @@ public class Dash : Ability {
 				_user._speed = _user._baseSpeed;
 			} else {
 				float elapsedTime = Time.deltaTime;
-				float verTranslation = _userDirection.z * _user._speed * elapsedTime;
+				float verTranslation = _userDirection.y * _user._speed * elapsedTime;
 				float horTranslation = _userDirection.x * _user._speed * elapsedTime;
 
 				_user.transform.Translate (horTranslation, 0, verTranslation);
@@ -36,7 +36,11 @@ public class Dash : Ability {
 		
 		_onGoing = true;
 		_user._speed = _user._baseSpeed * 5;
-		_userDirection = _user.transform.forward;
+
+		Vector3 mousePos = Input.mousePosition;
+		Vector2 centerPos = new Vector2 (Screen.width / 2, Screen.height / 2);
+		_userDirection = new Vector2(mousePos.x - centerPos.x, mousePos.y - centerPos.y);
+		_userDirection.Normalize ();
 	}
 }
 
