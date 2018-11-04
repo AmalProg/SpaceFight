@@ -17,6 +17,9 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 	public int _maxLife;
 	private bool _isDead;
 
+	private Vector3 _previousPos;
+	private float _hitBoxradius;
+
 	private Ability[] _abilities;
 	private Ability _onGoingAbility;
 
@@ -28,7 +31,8 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 		_LifeUI.SetParent(this.gameObject);
 
 		_speed = _baseSpeed;
-	}
+		_hitBoxradius = 1;
+	} 
 
 	protected void Start() {
 		_abilities = new Ability[4];
@@ -38,6 +42,8 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 		// default ability
 		_onGoingAbility = _abilities [0];
 		_abilities [0].Use ();
+
+		_previousPos = transform.position;
 
 		_LifeUI.transform.SetParent (GameController.lifeUICanvas.transform);
 
@@ -59,6 +65,25 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 			}
 
 			_onGoingAbility.Exec ();
+		}
+
+		collisionTest ();
+		_previousPos = transform.position;
+	}
+
+	private void collisionTest() {
+		RaycastHit hit1;
+		int layerMask = 1 << 8; // "Map"
+		Vector3 newPos = transform.position;
+		Vector3 direction = newPos - _previousPos;
+
+		if (Physics.Raycast (_previousPos, direction, out hit1, direction.magnitude + _hitBoxradius,
+				layerMask, QueryTriggerInteraction.Collide)) {
+			float lengthAB = ((direction * (1 + _hitBoxradius)) - (hit1.point - _previousPos)).magnitude;
+			float angleA = Vector3.Angle (-direction, hit1.normal);
+			float normalLength = Mathf.Sin (angleA) * lengthAB;
+			print (normalLength);
+			transform.position = newPos + hit1.normal * (normalLength);
 		}
 	}
 

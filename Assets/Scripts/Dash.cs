@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
+using System.Threading;
 using UnityEngine;
 
 public class Dash : Ability {
@@ -21,7 +22,7 @@ public class Dash : Ability {
 				_onGoing = false;
 				_user._speed = _user._baseSpeed;
 			} else {
-				float elapsedTime = Time.deltaTime;
+				float elapsedTime = Time.fixedDeltaTime;
 				float verTranslation = _userDirection.y * _user._speed * elapsedTime;
 				float horTranslation = _userDirection.x * _user._speed * elapsedTime;
 
@@ -53,8 +54,8 @@ public class Move : Ability {
 
 	override public void Exec () {
 		if (_onGoing) {
-			float elapsedTime = Time.deltaTime;
-			float verTranslation = Input.GetAxis ("Vertical") * _user._speed * elapsedTime;
+			float elapsedTime = Time.fixedDeltaTime;
+			float verTranslation = Input.GetAxis("Vertical") * _user._speed * elapsedTime;
 			float horTranslation = Input.GetAxis("Horizontal") * _user._speed * elapsedTime;
 
 			_user.transform.Translate (horTranslation, 0, verTranslation);

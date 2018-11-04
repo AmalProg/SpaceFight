@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	static public GameObject lifeUICanvas;
 
 	public GameObject playerObj;
+	public GameObject _cameraObj;
 	public GameObject gameUIObj;
 
 	private CameraController _camera;
@@ -18,12 +19,12 @@ public class GameController : MonoBehaviour {
 
 	void Awake() {
 		lifeUICanvas = GameObject.Find ("LifeUI");
-		_camera = GameObject.Find ("Main Camera").GetComponent<CameraController>();
+		player = playerObj.GetComponent<Spaceship> ();
+		_camera = _cameraObj.GetComponent<CameraController> ();
 	}
 
 	// Use this for initialization
 	void Start () {
-		player = playerObj.GetComponent<Spaceship> ();
 		_camera.focus = player;
 		/*gameUI = gameUIObj.GetComponent<GameUI> ();
 
