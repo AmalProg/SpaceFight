@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LifeUi : MonoBehaviour
 {
-	public GameObject _parentObj;
+	private GameObject _parentObj;
 	private Spaceship _parent;
 	private float _size;
 	private float _lifePercentage;

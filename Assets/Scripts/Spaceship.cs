@@ -44,7 +44,7 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 		_isDead = false;
 	}
 
-	protected void Update() {
+	protected void FixedUpdate() {
 		if (Input.GetButtonDown ("Jump")) {
 			if (_abilities [1].Use ()) {
 				_onGoingAbility = _abilities [1];

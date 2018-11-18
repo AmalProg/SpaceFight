@@ -12,7 +12,7 @@ public class Dash : Ability {
 		_cooldownTimer.SetResetTime (_cooldown);
 		_cooldownTimer.AddTime (_cooldown);
 
-		_effectTimer = new Timer (0.2f);
+		_effectTimer = new Timer (0.1f);
 	}
 
 	override public void Exec () {
@@ -21,11 +21,12 @@ public class Dash : Ability {
 				_onGoing = false;
 				_user._speed = _user._baseSpeed;
 			} else {
-				float elapsedTime = Time.deltaTime;
+				float elapsedTime = Time.fixedDeltaTime;
 				float verTranslation = _userDirection.y * _user._speed * elapsedTime;
 				float horTranslation = _userDirection.x * _user._speed * elapsedTime;
 
-				_user.transform.Translate (horTranslation, 0, verTranslation);
+				_userRB.velocity = new Vector3 (0, 0, 0);
+				_userRB.AddForce (horTranslation, 0, verTranslation, ForceMode.VelocityChange);
 			}
 		}
 	}
@@ -35,7 +36,7 @@ public class Dash : Ability {
 			_effectTimer.Reset ();
 		
 		_onGoing = true;
-		_user._speed = _user._baseSpeed * 5;
+		_user._speed = _user._baseSpeed * 60;
 
 		Vector3 mousePos = Input.mousePosition;
 		Vector2 centerPos = new Vector2 (Screen.width / 2, Screen.height / 2);
@@ -53,11 +54,11 @@ public class Move : Ability {
 
 	override public void Exec () {
 		if (_onGoing) {
-			float elapsedTime = Time.deltaTime;
+			float elapsedTime = Time.fixedDeltaTime;
 			float verTranslation = Input.GetAxis ("Vertical") * _user._speed * elapsedTime;
 			float horTranslation = Input.GetAxis("Horizontal") * _user._speed * elapsedTime;
 
-			_user.transform.Translate (horTranslation, 0, verTranslation);
+			_userRB.AddForce (horTranslation, 0, verTranslation, ForceMode.VelocityChange);
 		}
 	}
 

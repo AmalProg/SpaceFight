@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
-	public Spaceship focus { get { return _focus; } set { _focus = focus; } }
+	public Spaceship focus { get { return _focus; } set { _focus = value; } }
 
 	public float _height;
 	private Spaceship _focus;

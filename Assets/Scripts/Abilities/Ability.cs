@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class Ability
 {
 	protected Spaceship _user;
+	protected Rigidbody _userRB;
 	protected bool _onGoing;
 	protected bool _offCooldown;
 	protected float _cooldown;
@@ -13,6 +14,7 @@ public abstract class Ability
 
 	protected Ability(Spaceship user) {
 		_user = user;
+		_userRB = user.GetComponent<Rigidbody> ();
 		_offCooldown = true;
 		_onGoing = false;
 		_cooldownTimer = new Timer (_cooldown);
