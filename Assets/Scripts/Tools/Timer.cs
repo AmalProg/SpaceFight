@@ -40,6 +40,10 @@ public class Timer
 		_timeElapsed += time;
 	}
 
+	public float getElapsedTime() {
+		return _timeElapsed;
+	}
+
 	public void Reset() {
 		_timeElapsed = 0.0f;
 	}

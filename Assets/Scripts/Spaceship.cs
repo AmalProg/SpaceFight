@@ -33,7 +33,9 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 	protected void Start() {
 		_abilities = new Ability[4];
 		_abilities [0] = new Move(this);
-		_abilities [1] = new Dash(this);
+		_abilities [1] = new Cargo(this);
+		_abilities [2] = new Dash(this);
+		_abilities [3] = new SelfRepulsion(this);
 
 		// default ability
 		_onGoingAbility = _abilities [0];
@@ -45,21 +47,35 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 	}
 
 	protected void FixedUpdate() {
-		if (Input.GetButtonDown ("Jump")) {
-			if (_abilities [1].Use ()) {
-				_onGoingAbility = _abilities [1];
+		if ((_onGoingAbility != null && !_onGoingAbility.OnGoing()) || _onGoingAbility == null) {
+			if (_abilities [0].Use ()) {
+				_onGoingAbility = _abilities [0];
 			}
-		}
 
-		if (_onGoingAbility != null) {
-			if (!_onGoingAbility.OnGoing()) {
-				if (_abilities [0].Use ()) {
-					_onGoingAbility = _abilities [0];
+			if (Input.GetKeyDown(KeyCode.A)) {
+				if (_abilities [1].Use ()) {
+					_onGoingAbility = _abilities [1];
 				}
 			}
-
-			_onGoingAbility.Exec ();
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				if (_abilities [2].Use ()) {
+					_onGoingAbility = _abilities [2];
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.E)) {
+				if (_abilities [3].Use ()) {
+					_onGoingAbility = _abilities [3];
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.Alpha4)) {
+				if (_abilities [4].Use ()) {
+					_onGoingAbility = _abilities [4];
+				}
+			}
 		}
+
+		if (_onGoingAbility != null)
+			_onGoingAbility.Exec ();
 	}
 
 	public virtual void TakeDamage(int d, GameObject caster) {

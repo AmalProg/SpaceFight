@@ -2,7 +2,6 @@
 using System.Timers;
 using UnityEngine;
 
-
 public abstract class Ability
 {
 	protected Spaceship _user;

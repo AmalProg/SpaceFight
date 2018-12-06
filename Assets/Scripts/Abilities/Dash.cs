@@ -12,7 +12,7 @@ public class Dash : Ability {
 		_cooldownTimer.SetResetTime (_cooldown);
 		_cooldownTimer.AddTime (_cooldown);
 
-		_effectTimer = new Timer (0.1f);
+		_effectTimer = new Timer (0.06f);
 	}
 
 	override public void Exec () {
@@ -36,33 +36,9 @@ public class Dash : Ability {
 			_effectTimer.Reset ();
 		
 		_onGoing = true;
-		_user._speed = _user._baseSpeed * 60;
+		_user._speed = _user._baseSpeed * 50;
 
-		Vector3 mousePos = Input.mousePosition;
-		Vector2 centerPos = new Vector2 (Screen.width / 2, Screen.height / 2);
-		_userDirection = new Vector2(mousePos.x - centerPos.x, mousePos.y - centerPos.y);
+		_userDirection = Tools.getLookingDirection ();
 		_userDirection.Normalize ();
-	}
-}
-
-public class Move : Ability {
-
-	public Move(Spaceship user) : base(user) {
-		_cooldown = 0.0f;
-		_cooldownTimer.SetResetTime (_cooldown);
-	}
-
-	override public void Exec () {
-		if (_onGoing) {
-			float elapsedTime = Time.fixedDeltaTime;
-			float verTranslation = Input.GetAxis ("Vertical") * _user._speed * elapsedTime;
-			float horTranslation = Input.GetAxis("Horizontal") * _user._speed * elapsedTime;
-
-			_userRB.AddForce (horTranslation, 0, verTranslation, ForceMode.VelocityChange);
-		}
-	}
-
-	override protected void InternalUse () {
-		_onGoing = true;
 	}
 }
