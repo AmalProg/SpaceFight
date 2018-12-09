@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class Ability
 {
+	public float cooldown { get { return _cooldown; } }
+	public float elapsedTime { get { return _cooldownTimer.getElapsedTime(); } }
+
 	protected Spaceship _user;
 	protected Rigidbody _userRB;
 	protected bool _onGoing;

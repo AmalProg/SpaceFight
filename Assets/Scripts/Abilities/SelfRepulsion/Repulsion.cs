@@ -61,8 +61,6 @@ public class Repulsion : MonoBehaviour
 				float force = (_maxRadius - forceDir.magnitude) / _maxRadius * _repulsionForce;
 				rb.AddForceAtPosition(force * forceDir, transform.position, ForceMode.VelocityChange);
 			}
-
-			IDamageable entity = otherGO.GetComponent<IDamageable> ();
 		}
 	}
 }

@@ -5,11 +5,12 @@ using nInterfaces;
 
 public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 
-	public GameObject lifeUIPrefab; 
-
+	public Ability[] abilities { get { return _abilities; } }
 	public int life { get { return _currentLife; } } 
 	public int maxLife { get { return _maxLife; } } 
 	public bool isDead { get { return _isDead; } }
+
+	public GameObject lifeUIPrefab;
 
 	public float _baseSpeed;
 	public float _speed;
@@ -19,6 +20,7 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 
 	private Ability[] _abilities;
 	private Ability _onGoingAbility;
+	private Ability _moveAbility;
 
 	protected LifeUi _LifeUI;
 
@@ -31,15 +33,13 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 	}
 
 	protected void Start() {
+		_moveAbility = new Move(this);
+		_moveAbility.Use ();
 		_abilities = new Ability[4];
-		_abilities [0] = new Move(this);
+		_abilities [0] = new PrimaryFire(this);
 		_abilities [1] = new Cargo(this);
 		_abilities [2] = new Dash(this);
 		_abilities [3] = new SelfRepulsion(this);
-
-		// default ability
-		_onGoingAbility = _abilities [0];
-		_abilities [0].Use ();
 
 		_LifeUI.transform.SetParent (GameController.lifeUICanvas.transform);
 
@@ -48,37 +48,39 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 
 	protected void FixedUpdate() {
 		if ((_onGoingAbility != null && !_onGoingAbility.OnGoing()) || _onGoingAbility == null) {
-			if (_abilities [0].Use ()) {
-				_onGoingAbility = _abilities [0];
+			if (Input.GetButton("Mouse1")) {
+				if (_abilities [0].Use ()) {
+					_onGoingAbility = _abilities [0];
+				}
 			}
-
-			if (Input.GetKeyDown(KeyCode.A)) {
+			if (Input.GetMouseButton(1)) {
 				if (_abilities [1].Use ()) {
 					_onGoingAbility = _abilities [1];
 				}
 			}
-			if (Input.GetKeyDown(KeyCode.Space)) {
+			if (Input.GetKey(KeyCode.Space)) {
 				if (_abilities [2].Use ()) {
 					_onGoingAbility = _abilities [2];
 				}
 			}
-			if (Input.GetKeyDown(KeyCode.E)) {
+			if (Input.GetKey(KeyCode.E)) {
 				if (_abilities [3].Use ()) {
 					_onGoingAbility = _abilities [3];
 				}
 			}
-			if (Input.GetKeyDown(KeyCode.Alpha4)) {
-				if (_abilities [4].Use ()) {
-					_onGoingAbility = _abilities [4];
-				}
-			}
 		}
 
-		if (_onGoingAbility != null)
+		if (_onGoingAbility != null) {
 			_onGoingAbility.Exec ();
+
+			if (!_onGoingAbility.OnGoing ())
+				_moveAbility.Exec ();
+		} else {
+			_moveAbility.Exec ();
+		}
 	}
 
-	public virtual void TakeDamage(int d, GameObject caster) {
+	public virtual void TakeDamage(int d, Spaceship caster) {
 		_currentLife -= d;
 
 		if(_LifeUI)
@@ -101,7 +103,7 @@ public class Spaceship : MonoBehaviour, IDamageable, IHealable {
 			_LifeUI.LifeChanged ();
 	}
 
-	public virtual void Kill (GameObject caster) {
+	public virtual void Kill (Spaceship caster) {
 		_isDead = true;
 	}
 

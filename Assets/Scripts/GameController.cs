@@ -9,15 +9,16 @@ public class GameController : MonoBehaviour {
 	static public GameObject lifeUICanvas;
 
 	public GameObject playerObj;
-	public GameObject gameUIObj;
+	public GameObject abilitiesUIObj;
 
 	private CameraController _camera;
 	private Spaceship player;
 
-	private GameUI gameUI;
+	private AbilitiesUI abilitiesUI;
 
 	void Awake() {
 		lifeUICanvas = GameObject.Find ("LifeUI");
+		abilitiesUIObj = GameObject.Find ("AbilitiesUI");
 		_camera = GameObject.Find ("Main Camera").GetComponent<CameraController>();
 	}
 
@@ -25,9 +26,10 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		player = playerObj.GetComponent<Spaceship> ();
 		_camera.focus = player;
-		/*gameUI = gameUIObj.GetComponent<GameUI> ();
 
-		gameUI.UpdateLife (player.life);*/
+		abilitiesUI = abilitiesUIObj.GetComponent<AbilitiesUI> ();
+		abilitiesUI.abilities = player.abilities;
+		abilitiesUI.enabled = true;
 	}
 	
 	// Update is called once per frame

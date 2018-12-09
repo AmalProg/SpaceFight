@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class Cargo : Ability {
 
-	private GameObject projectilePrefab;
+	private GameObject cargoPrefab;
 
 	public Cargo(Spaceship user) : base(user) {
 		_cooldown = 1.0f;
 		_cooldownTimer.SetResetTime (_cooldown);
-		projectilePrefab = Resources.Load ("Prefab/ProjectilePrefab") as GameObject;
+		_cooldownTimer.AddTime (_cooldown);
+		cargoPrefab = Resources.Load ("Prefab/CargoPrefab") as GameObject;
 	}
 
 	override public void Exec () {
@@ -17,8 +18,8 @@ public class Cargo : Ability {
 			directionVec2.Normalize ();
 			Vector3 direction = new Vector3 (directionVec2.x, 0, directionVec2.y);
 
-			GameObject cargoExploObj = UnityEngine.Object.Instantiate (projectilePrefab, 
-				_user.transform.position + direction * (_user.transform.localScale.x + projectilePrefab.transform.localScale.x) / 1.5f, 
+			GameObject cargoExploObj = UnityEngine.Object.Instantiate (cargoPrefab, 
+				_user.transform.position + direction * (_user.transform.localScale.x + cargoPrefab.transform.localScale.x) / 1.5f, 
 				Quaternion.LookRotation(direction));
 			cargoExploObj.GetComponent<CargoExplosion> ().user = _user;
 

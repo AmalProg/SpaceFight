@@ -1,20 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-public class CargoExplosion : MonoBehaviour
+public class CargoExplosion : AbilityMonoBehaviour
 {
-	public Spaceship user { get { return _user; } set { _user = value; } }
-
-	private Spaceship _user;
 	private GameObject explosionPrefab;
 	private Timer _explosionTimer;
+	private float _explosionTime;
 
 	void Awake() {
 		explosionPrefab = Resources.Load ("Prefab/ExplosionPrefab") as GameObject;
+		_explosionTime = 1.5f;
 	}
 
 	void Start() {
-		_explosionTimer = new Timer (1.5f);
+		_explosionTimer = new Timer (_explosionTime);
 	}
 
 	void FixedUpdate() {

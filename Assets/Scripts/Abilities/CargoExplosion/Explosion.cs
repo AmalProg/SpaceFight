@@ -2,9 +2,8 @@
 using UnityEngine;
 using nInterfaces;
 
-public class Explosion : MonoBehaviour {
+public class Explosion : AbilityMonoBehaviour {
 
-	public Spaceship user { get { return _user; } set { _user = value; } }
 	public int damage { get { return _damage; } set { _damage = value; } } 
 	public float maxRadius { get { return _maxRadius; } set { _maxRadius = value; transform.GetChild (0).localScale = new Vector3 (_maxRadius / 5f, _maxRadius / 5f, _maxRadius / 5f); } } 
 	public float explosionForce { get { return _explosionForce; }  set { _explosionForce = value; } } 
@@ -21,7 +20,6 @@ public class Explosion : MonoBehaviour {
 			_particleSystem.Play ();
 		}} 
 
-	private Spaceship _user;
 	private int _damage;
 	private float _explosionForce;
 	private float _actualRadius;
@@ -67,7 +65,7 @@ public class Explosion : MonoBehaviour {
 
 			IDamageable entity = otherGO.GetComponent<IDamageable> ();
 			if (entity != null) {
-				entity.TakeDamage (_damage, _user.gameObject);
+				entity.TakeDamage (_damage, _user);
 			}
 		}
 	}
